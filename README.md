@@ -1,19 +1,34 @@
-# axi_tcm
+# axi_tcm (AXI Tightly-Coupled Memory)
 Tightly-Coupled Memory (TCM) implementation with AXI bus interface (for Zynq platform):
-* AXI-Lite for TCM's control register
-* AXI-Stream for stream data write
+* AXI-Lite for TCM subsystem's control register
+* AXI-Stream for stream data write (memory populating process)
 
-## tcm_axi_test_v1_0
-This is the first IP block prototype for the TCM subsystem. The main objective here is to validate the memory interface model for the NTT hardware accelerator.
-* Memory populating process:
-  * Data arriving at S_AXIS_TDATA port gets written into the internal inferred BRAM block;
-  * The BRAM write process is enabled by the AXI-Lite control register. Once the process is triggered, the BRAM addresses are synchronously generated with the arriving S_AXIS_TDATA data frames
-* Memory read process:
+## [Ongoing] `tcm_axi_test_v1_0`
+This is the first IP block prototype for the TCM subsystem. The main objective here is to validate the memory interface model for the NTT hardware accelerator. This IP version focuses on both AXI-Lite and AXI-Stream slave-side signals, the AXI-Stream master signals will be a subject of the next version.
+* Memory populating process (stream):
+  * Data arriving at `S_AXIS_TDATA` port gets written into the internal inferred BRAM block;
+  * The BRAM write process is enabled by the AXI-Lite control register. Once the process is triggered, the BRAM addresses are synchronously generated alongside with the arriving `S_AXIS_TDATA`'s data frames
+* Memory read process (addressed):
   * The BRAM addresses for the reading process are specified by the AXI-Lite control register. The value read from the BRAM block for a specified address is forwarded to the Integrated Logic Analyzer (ILA)'s input port.
-  * TODO: forward BRAM read output to another remaining AXI-Lite slave register (e.g. slv_reg1)
+  * **[TODO]** Forward BRAM read output to another remaining AXI-Lite slave register (e.g. `slv_reg1`), instead
 
 #### Top-level diagram of `tcm_axi_test_v1_0` core:
 
 <p align="center"> 
   <img src="images/tcm_axi_test_v1_0.png" width="400">
 </p>
+
+#### Control register's bit field specification:
+
+Register renaming: `slv_reg0` >> `tcm_control_reg`
+
+Control frame structure:
+
+```
+                        tcm_control_reg[31:0]
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ Index | 31   :  6 | 5  :  2 |        1        |     0     |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Signal | NOT USED  | rd_addr | tcm_axis_tready | tcm_wr_en |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+```
