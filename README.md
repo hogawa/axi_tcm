@@ -12,6 +12,8 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
   * The BRAM addresses for the reading process are specified by the AXI-Lite control register. The value read from the BRAM block for a specified address is forwarded to the Integrated Logic Analyzer (ILA)'s input port.
   * TODO: forward BRAM read output to another remaining AXI-Lite slave register (e.g. slv_reg1)
 
-Top-level diagram of `tcm_axi_test_v1_0` core:
+#### Top-level diagram of `tcm_axi_test_v1_0` core:
 
-<img src="images/tcm_axi_test_v1_0.png" width="400">
+<p align="center"> 
+  <img src="images/tcm_axi_test_v1_0.png" width="400">
+</p>
