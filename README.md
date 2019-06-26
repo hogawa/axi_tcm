@@ -20,8 +20,6 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
 
 #### Control register's bit field specification:
 
-Register renaming: `slv_reg0` >> `tcm_control_reg`
-
 Control frame structure:
 
 ```
@@ -32,3 +30,7 @@ Control frame structure:
 Signal | NOT USED  | rd_addr | tcm_axis_tready | tcm_wr_en |
        +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
+
+#### NOTES:
+
+* Register renaming: `slv_reg0` >> `tcm_control_reg`
