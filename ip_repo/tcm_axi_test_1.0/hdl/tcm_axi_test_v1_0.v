@@ -9,7 +9,7 @@ module tcm_axi_test_v1_0 # (
 	parameter integer C_S_AXIS_TDATA_WIDTH = 32
 )(
 	// User ports here
-
+    output[31:0] tcm_rd,
 	// AXI-Lite ports
 	input wire s_axil_aclk,
 	input wire s_axil_aresetn,
@@ -80,11 +80,12 @@ tcm_axi_test_v1_0_S_AXIS # (
 	.C_S_AXIS_TDATA_WIDTH(C_S_AXIS_TDATA_WIDTH)
 ) tcm_axi_test_v1_0_S_AXIS_inst (
     .USR_tcm_control(USR_tcm_control_w),
+    .tcm_rd(tcm_rd),
 	.S_AXIS_ACLK(s_axis_aclk),
 	.S_AXIS_ARESETN(s_axis_aresetn),
 	.S_AXIS_TREADY(s_axis_tready),
 	.S_AXIS_TDATA(s_axis_tdata),
-	.S_AXIS_TSTRB(s_axis_tstrb),
+//	.S_AXIS_TSTRB(s_axis_tstrb),
 	.S_AXIS_TLAST(s_axis_tlast),
 	.S_AXIS_TVALID(s_axis_tvalid)
 );

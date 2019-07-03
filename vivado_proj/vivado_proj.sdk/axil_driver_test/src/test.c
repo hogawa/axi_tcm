@@ -6,7 +6,7 @@
 int main() {
 
     printf("Testing AXIL registers...\n");
-    u32 test_val = 0xdeadbeef;
+    u32 test_val = 0x2;
     Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, test_val);
 
     u32 tcm_control_reg;
