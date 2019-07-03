@@ -6,3 +6,11 @@ ip_repo/tcm_axi_test_1.0/component.xml
 ip_repo/tcm_axi_test_1.0/drivers/
 ip_repo/tcm_axi_test_1.0/example_designs/
 ip_repo/tcm_axi_test_1.0/xgui/
+vivado_proj/ip_upgrade.log
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/.cproject
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/.gitignore
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/.project
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/src/README.txt
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/src/Xilinx.spec
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1/src/lscript.ld
+vivado_proj/vivado_proj.sdk/axi_tcm_testapp1_bsp/

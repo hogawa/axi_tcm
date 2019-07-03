@@ -9,6 +9,8 @@ module tcm_axi_test_v1_0_S_AXIS # (
     // Users ports here
     input[31:0] USR_tcm_control,
     output[31:0] tcm_rd,
+    output tcm_wr_en,
+    output[4:0] tcm_addr_out,
     // AXI-Stream ports
     input wire S_AXIS_ACLK,
     input wire S_AXIS_ARESETN,
@@ -25,31 +27,21 @@ assign S_AXIS_TREADY = USR_tcm_control[1];
 reg wr_en;
 reg[4:0] tcm_addr;
 
+// HSO: debug
+assign tcm_wr_en = wr_en;
+assign tcm_addr_out = tcm_addr;
+
 // Write enable signal for BRAM block
 // This signal has to be synchronized with the address register
 // Make sure that the wr_en is only active when the data is valid
 always @ (posedge S_AXIS_ACLK) begin
-    if (~S_AXIS_ARESETN) begin
+    if (~S_AXIS_ARESETN | ~S_AXIS_TVALID) begin
         wr_en <= 1'b0;
+        tcm_addr <= 0;
     end
     else if (S_AXIS_TVALID & USR_tcm_control[1]) begin
         wr_en <= 1'b1;
-    end
-    else if (~S_AXIS_TVALID) begin
-        wr_en <= 1'b0;
-    end
-end
-
-// Address generation logic for BRAM block
-always @ (posedge S_AXIS_ACLK) begin
-    if (~S_AXIS_ARESETN) begin
-        tcm_addr <= 0;
-    end
-    else if (wr_en) begin
         tcm_addr <= tcm_addr + 1'b1;
-    end
-    else if (S_AXIS_TLAST) begin
-        tcm_addr <= 0;
     end
 end
 
@@ -59,7 +51,7 @@ always @ (posedge S_AXIS_ACLK) begin
     if (~S_AXIS_ARESETN) begin
         tdata_buffer <= 0;
     end
-    else begin
+    else if (S_AXIS_TVALID) begin
         tdata_buffer <= S_AXIS_TDATA;
     end
 end
@@ -81,6 +73,7 @@ always @ (posedge S_AXIS_ACLK) begin
 end
 
 //assign tcm_rd = tcm_rd_out;
+// HSO: debug
 assign tcm_rd = tdata_buffer;
 
 endmodule

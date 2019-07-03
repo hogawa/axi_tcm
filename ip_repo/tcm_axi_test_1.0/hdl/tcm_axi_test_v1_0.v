@@ -10,6 +10,8 @@ module tcm_axi_test_v1_0 # (
 )(
 	// User ports here
     output[31:0] tcm_rd,
+    output tcm_wr_en,
+    output[4:0] tcm_addr_out,
 	// AXI-Lite ports
 	input wire s_axil_aclk,
 	input wire s_axil_aresetn,
@@ -81,6 +83,8 @@ tcm_axi_test_v1_0_S_AXIS # (
 ) tcm_axi_test_v1_0_S_AXIS_inst (
     .USR_tcm_control(USR_tcm_control_w),
     .tcm_rd(tcm_rd),
+    .tcm_wr_en(tcm_wr_en),
+    .tcm_addr_out(tcm_addr_out),
 	.S_AXIS_ACLK(s_axis_aclk),
 	.S_AXIS_ARESETN(s_axis_aresetn),
 	.S_AXIS_TREADY(s_axis_tready),
