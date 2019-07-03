@@ -18,11 +18,17 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
   <img src="images/tcm_axi_test_v1_0.png" width="400">
 </p>
 
-#### Zynq framework with AXI DMA IP core:
+The `tcm_rd` port is for exposing the core's internal signals for debugging purposes, e.g., visualization in the Integrated Logic Analyzer (ILA).
+
+#### Zynq framework with XIlinx's AXI DMA IP core:
 
 <p align="center"> 
   <img src="images/zynq_framework.png" width="700">
 </p>
+
+* Xilinx's AXI DMA IP core setup:
+  * Scatter-gather mode disabled, simple mode enabled
+  * Read channel enabled, write channel disabled
 
 #### Control register's bit field specification:
 
