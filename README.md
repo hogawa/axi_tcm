@@ -3,7 +3,7 @@ Tightly-Coupled Memory (TCM) implementation with AXI bus interface (for Zynq pla
 * AXI-Lite for TCM subsystem's control register
 * AXI-Stream for stream data write (memory populating process)
 
-## [Ongoing] `tcm_axi_test_v1_0`
+## [Ongoing] `tcm_axi_test_v1.0`
 This is the first IP block prototype for the TCM subsystem. The main objective here is to validate the memory interface model for the NTT hardware accelerator. This IP version focuses on both AXI-Lite and AXI-Stream slave-side signals, the AXI-Stream master signals will be a subject of the next version.
 * Memory populating process (stream):
   * Data arriving at `S_AXIS_TDATA` port gets written into the internal inferred BRAM block;
@@ -12,7 +12,7 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
   * The BRAM addresses for the reading process are specified by the AXI-Lite control register. The value read from the BRAM block for a specified address is forwarded to the Integrated Logic Analyzer (ILA)'s input port.
   * **[TODO]** Forward BRAM read output to another remaining AXI-Lite slave register (e.g. `slv_reg1`), instead
 
-#### Top-level diagram of `tcm_axi_test_v1_0` core:
+#### Top-level diagram of `tcm_axi_test_v1.0` core:
 
 <p align="center"> 
   <img src="images/tcm_axi_test_v1_0.png" width="400">
