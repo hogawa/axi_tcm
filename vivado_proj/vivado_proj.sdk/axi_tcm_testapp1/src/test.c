@@ -47,9 +47,8 @@ int main() {
 	u32 *TxBufferPtr;
 	TxBufferPtr = (u32 *)TX_BUFFER_BASE;
 
-	// Configure tcm_control_reg
-	u32 test_val = 0x2;
-	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, test_val);
+	// Configure tcm_control_reg: enable write process
+	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x2);
 
 	// Initialize and configure DMA
 	AxiDma_Init();
@@ -69,5 +68,11 @@ int main() {
 
 	while (XAxiDma_Busy(&AxiDma,XAXIDMA_DMA_TO_DEVICE)) {/* wait... */}
 	printf("Data sent... DONE\n");
+
+	// Configure tcm_control_reg: enable read process
+//	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x1);
+//	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x5);
+	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x9);
+
 	return XST_SUCCESS;
 }
