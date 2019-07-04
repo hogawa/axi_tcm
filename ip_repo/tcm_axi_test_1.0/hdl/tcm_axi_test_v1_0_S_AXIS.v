@@ -63,20 +63,17 @@ end
 reg[31:0] bram_block[0:31];
 
 // Transfer data from buffer register to BRAM block
-reg[31:0] tcm_rd_out;
-wire tcm_rd_addr;
-assign tcm_rd_addr = USR_tcm_control[5:2];
+reg[31:0] tcm_rd_out;  // for debugging port (ILA)
 always @ (posedge S_AXIS_ACLK) begin
     if (wr_en) begin
         bram_block[tcm_addr] <= tdata_buffer;
     end
-    else begin
-        tcm_rd_out <= bram_block[tcm_rd_addr];
+    else if (USR_tcm_control[0]) begin
+        tcm_rd_out <= bram_block[USR_tcm_control[6:2]];
     end
 end
 
-//assign tcm_rd = tcm_rd_out;
-// HSO: debug
-assign tcm_rd = tdata_buffer;
+// ILA debugging port
+assign tcm_rd = tcm_rd_out;
 
 endmodule
