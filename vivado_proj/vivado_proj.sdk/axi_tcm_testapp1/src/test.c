@@ -10,7 +10,7 @@
 #define DMA_DEV_ID      XPAR_AXIDMA_0_DEVICE_ID
 #define MEM_BASE_ADDR   0x01000000
 #define TX_BUFFER_BASE  (MEM_BASE_ADDR + 0x00100000)
-#define MAX_PKT_LEN		0xC // This is in bytes
+#define MAX_PKT_LEN	    0xC  // This is in bytes
 
 // DMA instance
 XAxiDma AxiDma;
@@ -69,10 +69,19 @@ int main() {
 	while (XAxiDma_Busy(&AxiDma,XAXIDMA_DMA_TO_DEVICE)) {/* wait... */}
 	printf("Data sent... DONE\n");
 
+	u32 tcm_read;
 	// Configure tcm_control_reg: enable read process
-//	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x1);
-//	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x5);
+	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x1);
+	tcm_read = Xil_In32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR + 4);
+	printf("Read from memory: %08x\n", tcm_read);
+
+	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x5);
+	tcm_read = Xil_In32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR + 4);
+	printf("Read from memory: %08x\n", tcm_read);
+
 	Xil_Out32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR, 0x9);
+	tcm_read = Xil_In32(XPAR_TCM_AXI_TEST_0_S_AXIL_BASEADDR + 4);
+	printf("Read from memory: %08x\n", tcm_read);
 
 	return XST_SUCCESS;
 }

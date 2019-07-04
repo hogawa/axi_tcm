@@ -8,9 +8,7 @@ module tcm_axi_test_v1_0_S_AXIS # (
 )(
     // Users ports here
     input[31:0] USR_tcm_control,
-    output[31:0] tcm_rd,
-    output tcm_wr_en,
-    output[4:0] tcm_addr_out,
+    output[31:0] USR_tcm_rd,
     // AXI-Stream ports
     input wire S_AXIS_ACLK,
     input wire S_AXIS_ARESETN,
@@ -24,17 +22,13 @@ module tcm_axi_test_v1_0_S_AXIS # (
 assign S_AXIS_TREADY = USR_tcm_control[1];
 
 // TCM BRAM signals
-reg wr_en;
-reg[4:0] counter_addr;  // this counter is used to delay the address increment in one cycle
-reg[4:0] tcm_addr;
+reg wr_en;              // Memory write enable signal
+reg[4:0] counter_addr;  // This counter is used to delay the address increment in one cycle
+reg[4:0] tcm_addr;      // This is the actual address value used for memory writing process
 
-// HSO: debug
-assign tcm_wr_en = wr_en;
-assign tcm_addr_out = tcm_addr;
-
-// Write enable signal for BRAM block
-// This signal has to be synchronized with the address register
-// Make sure that the wr_en is only active when the data is valid
+// Write enable signal for BRAM block:
+// - This signal has to be synchronized with the address register
+// - Make sure that the wr_en is only active when the data is valid
 always @ (posedge S_AXIS_ACLK) begin
     if (~S_AXIS_ARESETN | ~S_AXIS_TVALID) begin
         wr_en <= 1'b0;
@@ -48,7 +42,7 @@ always @ (posedge S_AXIS_ACLK) begin
     end
 end
 
-// AXI-Stream data buffer register
+// AXI-Stream data buffer register: data arriving from AXIS TDATA bus
 reg[31:0] tdata_buffer;
 always @ (posedge S_AXIS_ACLK) begin
     if (~S_AXIS_ARESETN) begin
@@ -59,11 +53,13 @@ always @ (posedge S_AXIS_ACLK) begin
     end
 end
 
-// Inferred memory block
+// Inferred memory block (BRAM)
 reg[31:0] bram_block[0:31];
 
-// Transfer data from buffer register to BRAM block
-reg[31:0] tcm_rd_out;  // for debugging port (ILA)
+// BRAM write process: transfer data from buffer register to BRAM block
+// BRAM read process: transfer data from the specified memory address to
+// the tcm_rd_out output register
+reg[31:0] tcm_rd_out;
 always @ (posedge S_AXIS_ACLK) begin
     if (wr_en) begin
         bram_block[tcm_addr] <= tdata_buffer;
@@ -73,7 +69,7 @@ always @ (posedge S_AXIS_ACLK) begin
     end
 end
 
-// ILA debugging port
-assign tcm_rd = tcm_rd_out;
+// Memory read port for AXIL's slv_reg1 slave register
+assign USR_tcm_rd = tcm_rd_out;
 
 endmodule

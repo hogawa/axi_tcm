@@ -9,9 +9,7 @@ module tcm_axi_test_v1_0 # (
 	parameter integer C_S_AXIS_TDATA_WIDTH = 32
 )(
 	// User ports here
-    output[31:0] tcm_rd,
-    output tcm_wr_en,
-    output[4:0] tcm_addr_out,
+    // NONE
 	// AXI-Lite ports
 	input wire s_axil_aclk,
 	input wire s_axil_aresetn,
@@ -46,6 +44,7 @@ module tcm_axi_test_v1_0 # (
 
 // User logic here
 wire[31:0] USR_tcm_control_w;
+wire[31:0] USR_tcm_rd_w;
 // User logic ends
 
 // Instantiation of AXI Bus Interface S_AXIL
@@ -54,6 +53,7 @@ tcm_axi_test_v1_0_S_AXIL # (
 	.C_S_AXI_ADDR_WIDTH(C_S_AXIL_ADDR_WIDTH)
 ) tcm_axi_test_v1_0_S_AXIL_inst (
 	.USR_tcm_control(USR_tcm_control_w),
+	.USR_tcm_rd(USR_tcm_rd_w),
 	.S_AXI_ACLK(s_axil_aclk),
 	.S_AXI_ARESETN(s_axil_aresetn),
 	.S_AXI_AWADDR(s_axil_awaddr),
@@ -82,20 +82,13 @@ tcm_axi_test_v1_0_S_AXIS # (
 	.C_S_AXIS_TDATA_WIDTH(C_S_AXIS_TDATA_WIDTH)
 ) tcm_axi_test_v1_0_S_AXIS_inst (
     .USR_tcm_control(USR_tcm_control_w),
-    .tcm_rd(tcm_rd),
-    .tcm_wr_en(tcm_wr_en),
-    .tcm_addr_out(tcm_addr_out),
+    .USR_tcm_rd(USR_tcm_rd_w),
 	.S_AXIS_ACLK(s_axis_aclk),
 	.S_AXIS_ARESETN(s_axis_aresetn),
 	.S_AXIS_TREADY(s_axis_tready),
 	.S_AXIS_TDATA(s_axis_tdata),
-//	.S_AXIS_TSTRB(s_axis_tstrb),
 	.S_AXIS_TLAST(s_axis_tlast),
 	.S_AXIS_TVALID(s_axis_tvalid)
 );
-
-// User logic here
-
-// User logic ends
 
 endmodule

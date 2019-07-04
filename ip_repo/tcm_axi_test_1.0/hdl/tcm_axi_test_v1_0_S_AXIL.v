@@ -50,6 +50,7 @@ module tcm_axi_test_v1_0_S_AXIL # (
 )(
     // User ports here
     output[31:0] USR_tcm_control,
+    input[31:0] USR_tcm_rd,
     // AXI-Lite ports
     input wire S_AXI_ACLK,
     input wire S_AXI_ARESETN,
@@ -325,7 +326,7 @@ always @ (*) begin
 	// Address decoding for reading registers
 	case (axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB])
 		2'h0: reg_data_out <= tcm_control_reg;
-		2'h1: reg_data_out <= slv_reg1;
+		2'h1: reg_data_out <= USR_tcm_rd;
 		2'h2: reg_data_out <= slv_reg2;
 		2'h3: reg_data_out <= slv_reg3;
 		default: reg_data_out <= 0;
