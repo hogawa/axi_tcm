@@ -14,13 +14,13 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
 #### Top-level diagram of `tcm_axi_test_v1.0` core:
 
 <p align="center"> 
-  <img src="images/tcm_axi_test_v1_0.png" width="400">
+  <img src="images/tcm_axi_test_v1_0.png" width="260">
 </p>
 
 #### Zynq framework with Xilinx's AXI DMA IP core:
 
 <p align="center"> 
-  <img src="images/zynq_framework.png" width="700">
+  <img src="images/zynq_framework.png" width="720">
 </p>
 
 * Xilinx's AXI DMA IP core setup:
