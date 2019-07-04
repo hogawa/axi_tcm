@@ -10,7 +10,7 @@
 #define DMA_DEV_ID      XPAR_AXIDMA_0_DEVICE_ID
 #define MEM_BASE_ADDR   0x01000000
 #define TX_BUFFER_BASE  (MEM_BASE_ADDR + 0x00100000)
-#define MAX_PKT_LEN		0x8 // This is in bytes
+#define MAX_PKT_LEN		0xC // This is in bytes
 
 // DMA instance
 XAxiDma AxiDma;
@@ -57,6 +57,7 @@ int main() {
 	// Created the TxBuffer
 	TxBufferPtr[0] = 0xdeadbeef;
 	TxBufferPtr[1] = 0xdeadbef0;
+	TxBufferPtr[2] = 0xdeadbef1;
 
 	// Flush the SrcBuffer before the DMA transfer, in case the Data Cache is enabled
 	// Sets up the DMA-To-Device so that data is sent
