@@ -9,8 +9,7 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
   * Data arriving at `S_AXIS_TDATA` port gets written into the internal inferred BRAM block;
   * The BRAM write process is enabled by the AXI-Lite control register. Once the process is triggered, the BRAM addresses are synchronously generated alongside with the arriving `S_AXIS_TDATA`'s data frames
 * Memory read process (addressed):
-  * The BRAM addresses for the reading process are specified by the AXI-Lite control register. The value read from the BRAM block for a specified address is forwarded to the Integrated Logic Analyzer (ILA)'s input port.
-  * **[TODO]** Forward BRAM read output to another remaining AXI-Lite slave register (e.g. `slv_reg1`), instead
+  * The BRAM addresses for the reading process are specified by the AXI-Lite control register. The value read from the BRAM block for a specified address is forwarded to the AXI-Lite slave register `slv_reg1`, from where it can be read from the software driver (memory mapped address).
 
 #### Top-level diagram of `tcm_axi_test_v1.0` core:
 
@@ -18,9 +17,7 @@ This is the first IP block prototype for the TCM subsystem. The main objective h
   <img src="images/tcm_axi_test_v1_0.png" width="400">
 </p>
 
-The `tcm_rd` port is for exposing the core's internal signals for debugging purposes, e.g., visualization in the Integrated Logic Analyzer (ILA).
-
-#### Zynq framework with XIlinx's AXI DMA IP core:
+#### Zynq framework with Xilinx's AXI DMA IP core:
 
 <p align="center"> 
   <img src="images/zynq_framework.png" width="700">
@@ -32,17 +29,18 @@ The `tcm_rd` port is for exposing the core's internal signals for debugging purp
 
 #### Control register's bit field specification:
 
-Control frame structure:
+Control frame structure (`tcm_control_reg` register):
 
 ```
                         tcm_control_reg[31:0]
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- Index | 31   :  6 | 5  :  2 |        1        |     0     |
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-Signal | NOT USED  | rd_addr | tcm_axis_tready | tcm_wr_en |
-       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ Index | 31  :   7 |  6  :  2  |       1       |      0      |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Signal | NOT USED  | read_addr |  tcm_write_en | tcm_read_en |
+       +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
 #### NOTES:
 
-* Register renaming: `slv_reg0` >> `tcm_control_reg`
+On AXI-Lite interface module:
+* Register renaming: `slv_reg0` --> `tcm_control_reg`
