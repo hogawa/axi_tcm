@@ -25,6 +25,7 @@ assign S_AXIS_TREADY = USR_tcm_control[1];
 
 // TCM BRAM signals
 reg wr_en;
+reg[4:0] counter_addr;  // this counter is used to delay the address increment in one cycle
 reg[4:0] tcm_addr;
 
 // HSO: debug
@@ -37,11 +38,13 @@ assign tcm_addr_out = tcm_addr;
 always @ (posedge S_AXIS_ACLK) begin
     if (~S_AXIS_ARESETN | ~S_AXIS_TVALID) begin
         wr_en <= 1'b0;
+        counter_addr <= 0;
         tcm_addr <= 0;
     end
     else if (S_AXIS_TVALID & USR_tcm_control[1]) begin
         wr_en <= 1'b1;
-        tcm_addr <= tcm_addr + 1'b1;
+        counter_addr <= counter_addr + 1'b1;
+        tcm_addr <= counter_addr;
     end
 end
 
