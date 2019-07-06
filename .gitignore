@@ -1,4 +1,6 @@
 .DS_Store
+*.log
+*.jou
 ip_repo/edit_tcm_axi_test_v1_0.cache/
 ip_repo/edit_tcm_axi_test_v1_0.hw/
 ip_repo/edit_tcm_axi_test_v1_0.xpr
